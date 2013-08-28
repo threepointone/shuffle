@@ -51,39 +51,43 @@ function aclone(el) {
 
 }
 
-module.exports = function(el) {
-    var children = _(el.childNodes).filter(function(el) {
-        return !el.__clone__;
-    });
+module.exports = function(el, options) {
+    options || (options || {});
+
+
+    var compare = options.compare;
+    var sort = options.sort;
+    var union = options.union;
 
     return {
-        add: function(nodes, compare, sort, union) {
+        add: function(nodes) {
+            var children = _(el.childNodes).filter(function(el) {
+                return !el.__clone__;
+            });
             var toAdd = _(nodes).filter(function(node) {
                 var match = _(children).find(function(child) {
                     return compare(child) === compare(node);
                 });
                 return !match;
             });
-            var toRemove = [];
-            if (!union) {
-                toRemove = _(children).filter(function(child) {
-                    var match = _(nodes).find(function(node) {
-                        return compare(child) === compare(node);
-                    });
-                    return !match;
+
+            var toLeave = _(children).filter(function(child) {
+                var match = _(nodes).find(function(node) {
+                    return compare(child) === compare(node);
                 });
-            }
+                return !match;
+            });
 
             var toMove = _(children).filter(function(child) {
                 return _(nodes).find(function(node) {
                     return compare(child) === compare(node);
                 });
-            })
+            });
 
             // and, let's do the insert
             var queue = [];
 
-            _(toRemove).each(function(child) {
+            (!union) && _(toLeave).each(function(child) {
                 var clone = aclone(child);
                 child.parentNode.appendChild(clone);
                 glass(child);
@@ -180,6 +184,3 @@ module.exports = function(el) {
         }
     };
 };
-
-
-// shuffle(el).add(nodes, compare, sort, union)

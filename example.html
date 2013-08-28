@@ -10,6 +10,7 @@
         }
 
         .box{
+            font-size:50px;
             display: block;
             position: relative;
             width:160px;
@@ -28,11 +29,17 @@
     <div id="container"></div>
     <script src="shuffle.js"></script>
     <script>
-        var shuffle = require('./index.js')
+        var container = document.getElementById('container'),
+            shuffle = require('./index.js')(container, {
+                compare: function(el) {
+                    return el.getAttribute('data-val');
+                },
+                sort: function(el){
+                    return parseInt(el.getAttribute('data-val'), 10);    
+                }
+            }),
             _ = require('underscore');
 
-
-        var container = document.getElementById('container');
 
          // first, let's populate the container with some nodes. 
         _.each(randArr(), function(n) {
@@ -49,11 +56,7 @@
             });
 
             // shove it into the container
-            shuffle(container).add(divs, function(el) {
-                return el.getAttribute('data-val');
-            }, function(el) {
-                return parseInt(el.getAttribute('data-val'), 10);
-            }, false);
+            shuffle.add(divs);
 
             // run this loop 30 times. because.
             if (ctr === 30) {
@@ -68,8 +71,8 @@
             div.className = 'box';
             var time = Date.now();
             div.innerHTML = val;
-            div.setAttribute('data-val', val );
-            div.setAttribute('data-time', time);
+            div.setAttribute('data-val', val + '');
+            div.setAttribute('data-time', time + '');
             return div;
         }
 
