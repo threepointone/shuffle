@@ -6,300 +6,300 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
  * Ken Snyder <kendsnyder@gmail.com>
  */
 var easings = {
-  easeOut: function(t) {
-    return Math.sin(t * Math.PI / 2);
-  },
+    easeOut: function(t) {
+        return Math.sin(t * Math.PI / 2);
+    },
 
-  easeOutStrong: function(t) {
-    return (t == 1) ? 1 : 1 - Math.pow(2, -10 * t);
-  },
+    easeOutStrong: function(t) {
+        return (t == 1) ? 1 : 1 - Math.pow(2, -10 * t);
+    },
 
-  easeIn: function(t) {
-    return t * t;
-  },
+    easeIn: function(t) {
+        return t * t;
+    },
 
-  easeInStrong: function(t) {
-    return (t == 0) ? 0 : Math.pow(2, 10 * (t - 1));
-  },
+    easeInStrong: function(t) {
+        return (t == 0) ? 0 : Math.pow(2, 10 * (t - 1));
+    },
 
-  easeOutBounce: function(pos) {
-    if ((pos) < (1 / 2.75)) {
-      return (7.5625 * pos * pos);
-    } else if (pos < (2 / 2.75)) {
-      return (7.5625 * (pos -= (1.5 / 2.75)) * pos + .75);
-    } else if (pos < (2.5 / 2.75)) {
-      return (7.5625 * (pos -= (2.25 / 2.75)) * pos + .9375);
-    } else {
-      return (7.5625 * (pos -= (2.625 / 2.75)) * pos + .984375);
+    easeOutBounce: function(pos) {
+        if ((pos) < (1 / 2.75)) {
+            return (7.5625 * pos * pos);
+        } else if (pos < (2 / 2.75)) {
+            return (7.5625 * (pos -= (1.5 / 2.75)) * pos + .75);
+        } else if (pos < (2.5 / 2.75)) {
+            return (7.5625 * (pos -= (2.25 / 2.75)) * pos + .9375);
+        } else {
+            return (7.5625 * (pos -= (2.625 / 2.75)) * pos + .984375);
+        }
+    },
+
+    easeInBack: function(pos) {
+        var s = 1.70158;
+        return (pos) * pos * ((s + 1) * pos - s);
+    },
+
+    easeOutBack: function(pos) {
+        var s = 1.70158;
+        return (pos = pos - 1) * pos * ((s + 1) * pos + s) + 1;
+    },
+
+    bounce: function(t) {
+        if (t < (1 / 2.75)) {
+            return 7.5625 * t * t;
+        }
+        if (t < (2 / 2.75)) {
+            return 7.5625 * (t -= (1.5 / 2.75)) * t + 0.75;
+        }
+        if (t < (2.5 / 2.75)) {
+            return 7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375;
+        }
+        return 7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375;
+    },
+
+    bouncePast: function(pos) {
+        if (pos < (1 / 2.75)) {
+            return (7.5625 * pos * pos);
+        } else if (pos < (2 / 2.75)) {
+            return 2 - (7.5625 * (pos -= (1.5 / 2.75)) * pos + .75);
+        } else if (pos < (2.5 / 2.75)) {
+            return 2 - (7.5625 * (pos -= (2.25 / 2.75)) * pos + .9375);
+        } else {
+            return 2 - (7.5625 * (pos -= (2.625 / 2.75)) * pos + .984375);
+        }
+    },
+
+    swingTo: function(pos) {
+        var s = 1.70158;
+        return (pos -= 1) * pos * ((s + 1) * pos + s) + 1;
+    },
+
+    swingFrom: function(pos) {
+        var s = 1.70158;
+        return pos * pos * ((s + 1) * pos - s);
+    },
+
+    elastic: function(pos) {
+        return -1 * Math.pow(4, -8 * pos) * Math.sin((pos * 6 - 1) * (2 * Math.PI) / 2) + 1;
+    },
+
+    spring: function(pos) {
+        return 1 - (Math.cos(pos * 4.5 * Math.PI) * Math.exp(-pos * 6));
+    },
+
+    blink: function(pos, blinks) {
+        return Math.round(pos * (blinks || 5)) % 2;
+    },
+
+    pulse: function(pos, pulses) {
+        return (-Math.cos((pos * ((pulses || 5) - .5) * 2) * Math.PI) / 2) + .5;
+    },
+
+    wobble: function(pos) {
+        return (-Math.cos(pos * Math.PI * (9 * pos)) / 2) + 0.5;
+    },
+
+    sinusoidal: function(pos) {
+        return (-Math.cos(pos * Math.PI) / 2) + 0.5;
+    },
+
+    flicker: function(pos) {
+        var pos = pos + (Math.random() - 0.5) / 5;
+        return easings.sinusoidal(pos < 0 ? 0 : pos > 1 ? 1 : pos);
+    },
+
+    mirror: function(pos) {
+        if (pos < 0.5)
+            return easings.sinusoidal(pos * 2);
+        else
+            return easings.sinusoidal(1 - (pos - 0.5) * 2);
     }
-  },
-
-  easeInBack: function(pos) {
-    var s = 1.70158;
-    return (pos) * pos * ((s + 1) * pos - s);
-  },
-
-  easeOutBack: function(pos) {
-    var s = 1.70158;
-    return (pos = pos - 1) * pos * ((s + 1) * pos + s) + 1;
-  },
-
-  bounce: function(t) {
-    if (t < (1 / 2.75)) {
-      return 7.5625 * t * t;
-    }
-    if (t < (2 / 2.75)) {
-      return 7.5625 * (t -= (1.5 / 2.75)) * t + 0.75;
-    }
-    if (t < (2.5 / 2.75)) {
-      return 7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375;
-    }
-    return 7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375;
-  },
-
-  bouncePast: function(pos) {
-    if (pos < (1 / 2.75)) {
-      return (7.5625 * pos * pos);
-    } else if (pos < (2 / 2.75)) {
-      return 2 - (7.5625 * (pos -= (1.5 / 2.75)) * pos + .75);
-    } else if (pos < (2.5 / 2.75)) {
-      return 2 - (7.5625 * (pos -= (2.25 / 2.75)) * pos + .9375);
-    } else {
-      return 2 - (7.5625 * (pos -= (2.625 / 2.75)) * pos + .984375);
-    }
-  },
-
-  swingTo: function(pos) {
-    var s = 1.70158;
-    return (pos -= 1) * pos * ((s + 1) * pos + s) + 1;
-  },
-
-  swingFrom: function(pos) {
-    var s = 1.70158;
-    return pos * pos * ((s + 1) * pos - s);
-  },
-
-  elastic: function(pos) {
-    return -1 * Math.pow(4, -8 * pos) * Math.sin((pos * 6 - 1) * (2 * Math.PI) / 2) + 1;
-  },
-
-  spring: function(pos) {
-    return 1 - (Math.cos(pos * 4.5 * Math.PI) * Math.exp(-pos * 6));
-  },
-
-  blink: function(pos, blinks) {
-    return Math.round(pos * (blinks || 5)) % 2;
-  },
-
-  pulse: function(pos, pulses) {
-    return (-Math.cos((pos * ((pulses || 5) - .5) * 2) * Math.PI) / 2) + .5;
-  },
-
-  wobble: function(pos) {
-    return (-Math.cos(pos * Math.PI * (9 * pos)) / 2) + 0.5;
-  },
-
-  sinusoidal: function(pos) {
-    return (-Math.cos(pos * Math.PI) / 2) + 0.5;
-  },
-
-  flicker: function(pos) {
-    var pos = pos + (Math.random() - 0.5) / 5;
-    return easings.sinusoidal(pos < 0 ? 0 : pos > 1 ? 1 : pos);
-  },
-
-  mirror: function(pos) {
-    if (pos < 0.5)
-      return easings.sinusoidal(pos * 2);
-    else
-      return easings.sinusoidal(1 - (pos - 0.5) * 2);
-  }
 
 };
 
 module.exports = easings;
 },{}],"1SmzYX":[function(require,module,exports){
 var _ = require('underscore'),
-	morpheus = require('morpheus'),
-	easing = require('./easings.js').easeOut;
+    morpheus = require('morpheus'),
+    easing = require('./easings.js').easeOut;
 
 function show(el) {
-	el.style.display = el.__display || '';
-	return el;
+    el.style.display = el.__display || '';
+    return el;
 }
 
 function hide(el) {
-	el.__display = el.style.display !== 'none' ? el.style.display : '';
-	el.style.display = 'none';
-	return el;
+    el.__display = el.style.display !== 'none' ? el.style.display : '';
+    el.style.display = 'none';
+    return el;
 }
 
 var zero = 0;
 var one = 1;
 
 function glass(el) {
-	el.style.opacity = zero;
+    el.style.opacity = zero;
 }
 
 function wood(el) {
-	el.style.opacity = one;
+    el.style.opacity = one;
 }
 
 function margin(el) {
-	var style = el.currentStyle || window.getComputedStyle(el);
-	return {
-		top: parseInt(style.marginTop, 10) | 0,
-		left: parseInt(style.marginLeft, 10) | 0
-	};
+    var style = el.currentStyle || window.getComputedStyle(el);
+    return {
+        top: parseInt(style.marginTop, 10) | 0,
+        left: parseInt(style.marginLeft, 10) | 0
+    };
 }
 
 function aclone(el) {
-	var clone = el.cloneNode(true);
-	var m = margin(el);
+    var clone = el.cloneNode(true);
+    var m = margin(el);
 
-	_.extend(clone.style, {
-		position: 'absolute',
-		top: (el.offsetTop - m.top) + 'px',
-		left: (el.offsetLeft - m.left) + 'px'
+    _.extend(clone.style, {
+        position: 'absolute',
+        top: (el.offsetTop - m.top) + 'px',
+        left: (el.offsetLeft - m.left) + 'px'
 
-	});
+    });
 
-	clone.className += ' clone';
+    clone.className += ' clone';
 
-	clone.__clone__ = true; // a little hint for anyone else to ignore this. 
+    clone.__clone__ = true; // a little hint for anyone else to ignore this. 
 
-	return clone;
+    return clone;
 
 }
 
 module.exports = function(el) {
-	var children = _(el.childNodes).filter(function(el) {
-		return !el.__clone__;
-	});
+    var children = _(el.childNodes).filter(function(el) {
+        return !el.__clone__;
+    });
 
-	return {
-		add: function(nodes, compare, sort, union) {
-			var toAdd = _(nodes).filter(function(node) {
-				var match = _(children).find(function(child) {
-					return compare(child) === compare(node);
-				});
-				return !match;
-			});
-			var toRemove = [];
-			if (!union) {
-				toRemove = _(children).filter(function(child) {
-					var match = _(nodes).find(function(node) {
-						return compare(child) === compare(node);
-					});
-					return !match;
-				});
-			}
+    return {
+        add: function(nodes, compare, sort, union) {
+            var toAdd = _(nodes).filter(function(node) {
+                var match = _(children).find(function(child) {
+                    return compare(child) === compare(node);
+                });
+                return !match;
+            });
+            var toRemove = [];
+            if (!union) {
+                toRemove = _(children).filter(function(child) {
+                    var match = _(nodes).find(function(node) {
+                        return compare(child) === compare(node);
+                    });
+                    return !match;
+                });
+            }
 
-			var toMove = _(children).filter(function(child) {
-				return _(nodes).find(function(node) {
-					return compare(child) === compare(node);
-				});
-			})
+            var toMove = _(children).filter(function(child) {
+                return _(nodes).find(function(node) {
+                    return compare(child) === compare(node);
+                });
+            })
 
-			// and, let's do the insert
-			var queue = [];
+            // and, let's do the insert
+            var queue = [];
 
-			_(toRemove).each(function(child) {
-				var clone = aclone(child);
-				child.parentNode.appendChild(clone);
-				glass(child);
-				queue.push(function() {
-					child.parentNode.removeChild(child);
-				});
+            _(toRemove).each(function(child) {
+                var clone = aclone(child);
+                child.parentNode.appendChild(clone);
+                glass(child);
+                queue.push(function() {
+                    child.parentNode.removeChild(child);
+                });
 
-				setTimeout(function() {
-					clone.animation = morpheus(clone, {
-						top: -500 + Math.random() * 1500,
-						left: -500 + Math.random() * 1500,
-						opacity: zero,
-						easing: easing,
-						duration: 100 + (Math.random() * 900),
-						complete: function() {
-							clone.parentNode.removeChild(clone);
-						}
-					})
-				}, Math.random() * 200);
+                setTimeout(function() {
+                    clone.animation = morpheus(clone, {
+                        top: -500 + Math.random() * 1500,
+                        left: -500 + Math.random() * 1500,
+                        opacity: zero,
+                        easing: easing,
+                        duration: 100 + (Math.random() * 900),
+                        complete: function() {
+                            clone.parentNode.removeChild(clone);
+                        }
+                    })
+                }, Math.random() * 200);
 
-			});
+            });
 
-			_(toMove).each(function(child) {
-				var clone = aclone(child);
-				glass(child);
-				el.appendChild(clone);
-				queue.push(function() {
-					setTimeout(function() {
-						var m = margin(child);
-						clone.animation = morpheus(clone, {
-							top: child.offsetTop - m.top,
-							left: child.offsetLeft - m.left,
-							easing: easing,
-							duration: 100 + (Math.random() * 900),
-							complete: function() {
-								clone.parentNode.removeChild(clone);
-								wood(child);
-							}
-						});
-					}, Math.random() * 200);
+            _(toMove).each(function(child) {
+                var clone = aclone(child);
+                glass(child);
+                el.appendChild(clone);
+                queue.push(function() {
+                    setTimeout(function() {
+                        var m = margin(child);
+                        clone.animation = morpheus(clone, {
+                            top: child.offsetTop - m.top,
+                            left: child.offsetLeft - m.left,
+                            easing: easing,
+                            duration: 100 + (Math.random() * 900),
+                            complete: function() {
+                                clone.parentNode.removeChild(clone);
+                                wood(child);
+                            }
+                        });
+                    }, Math.random() * 200);
 
-				});
+                });
 
-			});
+            });
 
-			_(toAdd).each(function(node) {
-				var clone = aclone(node);
+            _(toAdd).each(function(node) {
+                var clone = aclone(node);
 
-				_.extend(clone.style, {
-					top: (-500 + Math.random() * 1500) + 'px',
-					left: (-500 + Math.random() * 1500) + 'px'
-				});
+                _.extend(clone.style, {
+                    top: (-500 + Math.random() * 1500) + 'px',
+                    left: (-500 + Math.random() * 1500) + 'px'
+                });
 
-				glass(clone);
-				glass(node);
-				el.appendChild(clone);
-				el.appendChild(node);
+                glass(clone);
+                glass(node);
+                el.appendChild(clone);
+                el.appendChild(node);
 
-				queue.push(function() {
-					setTimeout(function() {
-						var m = margin(node);
-						clone.animation = morpheus(clone, {
-							opacity: one,
-							top: node.offsetTop - m.top,
-							left: node.offsetLeft - m.left,
-							easing: easing,
-							duration: 100 + (Math.random() * 900),
-							complete: function() {
-								clone.parentNode.removeChild(clone);
-								wood(node);
-							}
-						});
-					}, Math.random() * 200)
+                queue.push(function() {
+                    setTimeout(function() {
+                        var m = margin(node);
+                        clone.animation = morpheus(clone, {
+                            opacity: one,
+                            top: node.offsetTop - m.top,
+                            left: node.offsetLeft - m.left,
+                            easing: easing,
+                            duration: 100 + (Math.random() * 900),
+                            complete: function() {
+                                clone.parentNode.removeChild(clone);
+                                wood(node);
+                            }
+                        });
+                    }, Math.random() * 200)
 
-				});
+                });
 
-			});
+            });
 
-			// sort
-			_(el.childNodes).chain().filter(function(el) {
-				return !el.__clone__;
-			}).sortBy(sort).each(function(ele) {
-				el.appendChild(ele);
-			});
-			// run the stuff in queue
-			_.each(queue, function(f) {
-				f();
-			});
-			// then reassign filtered el.childNodes to children
-			children = _(el.childNodes).filter(function(el) {
-				return !el.__clone__;
-			});
+            // sort
+            _(el.childNodes).chain().filter(function(el) {
+                return !el.__clone__;
+            }).sortBy(sort).each(function(ele) {
+                el.appendChild(ele);
+            });
+            // run the stuff in queue
+            _.each(queue, function(f) {
+                f();
+            });
+            // then reassign filtered el.childNodes to children
+            children = _(el.childNodes).filter(function(el) {
+                return !el.__clone__;
+            });
 
-		}
-	};
+        }
+    };
 };
 
 
