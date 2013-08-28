@@ -42,21 +42,17 @@
 
 
          // first, let's populate the container with some nodes. 
-        _.each(randArr(), function(n) {
-            container.appendChild(div(n));
+        _.each(randArr(), function(el) {
+            container.appendChild(el);
         });
 
 
         var ctr = 0;
         var intvl = setInterval(function() {
             ctr++;
-            // generate some new nodes
-            var divs = _.map(randArr(), function(n) {
-                return div(n);
-            });
-
-            // shove it into the container
-            shuffle.add(divs);
+            
+            // shove some new nodes into the container
+            shuffle.add(randArr());
 
             // run this loop 30 times. because.
             if (ctr === 30) {
@@ -77,9 +73,7 @@
         }
 
         function randArr() {
-            return _(25).chain().times(function(n) {
-                return n;
-            }).shuffle().value().slice(5);
+            return _(25).chain().times(div).shuffle().value().slice(5);
         }
 
     </script>
