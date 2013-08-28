@@ -43,17 +43,19 @@
 		var ctr = 0;
 		var intvl = setInterval(function() {
 			ctr++;
-
+			// generate some new nodes
 			var divs = _.map(randArr(), function(n) {
 				return div(n);
 			});
 
+			// shove it into the container
 			shuffle(container).add(divs, function(el) {
 				return el.getAttribute('data-val');
 			}, function(el) {
 				return parseInt(el.getAttribute('data-val'), 10);
 			}, false);
 
+			// run this loop 30 times. because.
 			if (ctr === 30) {
 				clearInterval(intvl);
 			}

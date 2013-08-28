@@ -306,6 +306,8 @@ module.exports = function(el) {
 // shuffle(el).add(nodes, compare, sort, union)
 },{"./easings.js":1,"morpheus":"ezqsfE","underscore":"MJVfUe"}],"./index.js":[function(require,module,exports){
 module.exports=require('1SmzYX');
+},{}],"underscore":[function(require,module,exports){
+module.exports=require('MJVfUe');
 },{}],"ezqsfE":[function(require,module,exports){
 /*!
   * Morpheus - A Brilliant Animator
@@ -710,8 +712,6 @@ module.exports=require('1SmzYX');
 
 });
 
-},{}],"morpheus":[function(require,module,exports){
-module.exports=require('ezqsfE');
 },{}],"MJVfUe":[function(require,module,exports){
 //     Underscore.js 1.5.1
 //     http://underscorejs.org
@@ -1960,7 +1960,7 @@ module.exports=require('ezqsfE');
 
 }).call(this);
 
-},{}],"underscore":[function(require,module,exports){
-module.exports=require('MJVfUe');
+},{}],"morpheus":[function(require,module,exports){
+module.exports=require('ezqsfE');
 },{}]},{},[])
 ;
