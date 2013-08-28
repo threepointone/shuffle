@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		html, body{
+			margin:0;
+			padding: 0;
+			font-family: helvetica, arial, sans-serif;
+		}
+
+		.box{
+			display: block;
+			position: relative;
+			width:160px;
+			height:160px;
+			padding:20px;
+			background-color: gray;
+			float: left;
+			margin-left: 10px;
+			margin-top: 10px;
+			opacity:1;
+
+		}
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+	<script src="shuffle.js"></script>
+	<script>
+		var shuffle = require('./index.js')
+			_ = require('underscore');
+
+
+		var container = document.getElementById('container');
+
+		 // first, let's populate the container with some nodes. 
+		_.each(randArr(), function(n) {
+			container.appendChild(div(n));
+		});
+
+
+		var ctr = 0;
+		var intvl = setInterval(function() {
+			ctr++;
+
+			var divs = _.map(randArr(), function(n) {
+				return div(n);
+			});
+
+			shuffle(container).add(divs, function(el) {
+				return el.getAttribute('data-val');
+			}, function(el) {
+				return parseInt(el.getAttribute('data-val'), 10);
+			}, false);
+
+			if (ctr === 30) {
+				clearInterval(intvl);
+			}
+		}, 2000);
+
+
+
+		function div(val) {
+			var div = document.createElement('div');
+			div.className = 'box';
+			var time = Date.now();
+			div.innerHTML = val;
+			div.setAttribute('data-val', val );
+			div.setAttribute('data-time', time);
+			return div;
+		}
+
+		function randArr() {
+			return _(25).chain().times(function(n) {
+				return n;
+			}).shuffle().value().slice(5);
+		}
+
+	</script>
+
+
+</body>
+</html>
