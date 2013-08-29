@@ -37,9 +37,6 @@
             shuffle = require('./index.js')(container, {
                 compare: function(el) {
                     return el.getAttribute('data-val');
-                },
-                sort: function(el){
-                    return parseInt(el.getAttribute('data-val'), 10);    
                 }
             }),
             _ = require('underscore');
@@ -71,13 +68,18 @@
             div.className = 'box';
             var time = Date.now();
             div.innerHTML = val;
-            div.setAttribute('data-val', val + '');
-            div.setAttribute('data-time', time + '');
+            div.setAttribute('data-val', val);
+            div.setAttribute('data-time', time);
+            div.style.backgroundColor = randomColor();
             return div;
         }
 
         function randArr() {
-            return _(25).chain().times(div).shuffle().value().slice(5);
+            return _(50).chain().times(div).value().slice(Math.random()*40|0);
+        }
+
+        function randomColor(){
+            return '#'+Math.floor(Math.random()*16777215).toString(16);
         }
 
     </script>

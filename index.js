@@ -59,9 +59,9 @@ module.exports = function(el, options) {
     options || (options || {});
 
 
-    var compare = options.compare;
+    var compare = options.compare || _.identity;
     var sort = options.sort;
-    var union = options.union;
+    var union = options.union || false;
 
     return {
         add: function(nodes) {
@@ -106,7 +106,7 @@ module.exports = function(el, options) {
                         left: -500 + Math.random() * 1500,
                         opacity: zero,
                         easing: easing,
-                        duration: 100 + (Math.random() * 900),
+                        duration: 200 + (Math.random() * 800),
                         complete: function() {
                             clone.parentNode.removeChild(clone);
                         }
@@ -148,7 +148,7 @@ module.exports = function(el, options) {
                             top: node.offsetTop - m.top,
                             left: node.offsetLeft - m.left,
                             easing: easing,
-                            duration: 100 + (Math.random() * 900)
+                            duration: 200 + (Math.random() * 800)
                         };
 
                         childClone.animation = morpheus(childClone, _.extend({}, opts, {
@@ -192,7 +192,7 @@ module.exports = function(el, options) {
                             top: node.offsetTop - m.top,
                             left: node.offsetLeft - m.left,
                             easing: easing,
-                            duration: 100 + (Math.random() * 900),
+                            duration: 200 + (Math.random() * 800),
                             complete: function() {
                                 clone.parentNode.removeChild(clone);
                                 wood(node);
@@ -206,7 +206,9 @@ module.exports = function(el, options) {
             // sort
             _(el.childNodes).chain().filter(function(el) {
                 return !el.__clone__;
-            }).sortBy(sort).each(function(ele) {
+            }).sortBy(sort|| function(el){
+                return _(nodes).indexOf(el);
+            }).each(function(ele) {
                 el.appendChild(ele);
             });
             // run the stuff in queue
