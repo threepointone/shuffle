@@ -40,7 +40,6 @@ function absclone(el) {
     });
 
     clone.className += ' clone';
-
     clone.__clone__ = true; // a little hint for anyone else to ignore this. 
 
     return clone;
@@ -110,15 +109,12 @@ module.exports = function(el, options) {
 
             _(toMove).each(function(child) {
 
-                var m = margin(child);
-
-                var childClone = absclone(child);
-
-                var node = _.find(nodes, function(node) {
-                    return compare(node) === compare(child);
-                });
-
-                var nodeClone = absclone(node);
+                var m = margin(child),
+                    childClone = absclone(child),
+                    node = _.find(nodes, function(node) {
+                        return compare(node) === compare(child);
+                    }), 
+                    nodeClone = absclone(node);
 
                 _.extend(nodeClone.style, {
                     opacity: zero,
@@ -168,7 +164,7 @@ module.exports = function(el, options) {
             _(toAdd).each(function(node) {
                 var clone = absclone(node);
 
-                _.extend({
+                _.extend(clone.style, {
                     top: (-500 + Math.random() * 1500) + 'px',
                     left: (-500 + Math.random() * 1500) + 'px'
                 });
