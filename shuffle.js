@@ -165,9 +165,11 @@ function absclone(el) {
     var clone = el.cloneNode(true);
     var m = margin(el);
 
-    clone.style.position = 'absolute';
-    clone.style.top = (el.offsetTop - m.top) + 'px';
-    clone.style.left = (el.offsetLeft - m.left) + 'px'
+    _.extend(clone.style, {
+        position: 'absolute',
+        top: (el.offsetTop - m.top) + 'px',
+        left: (el.offsetLeft - m.left) + 'px'
+    });
 
     clone.className += ' clone';
 
@@ -189,6 +191,7 @@ module.exports = function(el, options) {
             var children = _(el.childNodes).filter(function(el) {
                 return !el.__clone__;
             });
+
             var toAdd = _(nodes).filter(function(node) {
                 var match = _(children).find(function(child) {
                     return compare(child) === compare(node);
@@ -240,23 +243,27 @@ module.exports = function(el, options) {
 
                 var m = margin(child);
 
+                var childClone = absclone(child);
+
                 var node = _.find(nodes, function(node) {
                     return compare(node) === compare(child);
                 });
 
                 var nodeClone = absclone(node);
-                var childClone = absclone(child);
 
-                nodeClone.style.opacity = 0;
-                nodeClone.style.top = (child.offsetTop - m.top) + 'px';
-                nodeClone.style.left = (child.offsetLeft - m.left) + 'px';
+                _.extend(nodeClone.style, {
+                    opacity: zero,
+                    top: (child.offsetTop - m.top) + 'px',
+                    left: (child.offsetLeft - m.left) + 'px'
+                });
 
                 glass(node);
                 glass(child);
 
                 el.appendChild(node);
-                el.appendChild(childClone);
+
                 el.appendChild(nodeClone);
+                el.appendChild(childClone);
 
                 replace(child, node);
 
@@ -273,14 +280,14 @@ module.exports = function(el, options) {
                         };
 
                         childClone.animation = morpheus(childClone, _.extend({}, opts, {
-                            opacity: 0,
+                            opacity: zero,
                             complete: function() {
                                 childClone.parentNode.removeChild(childClone);
                             }
                         }));
 
                         nodeClone.animation = morpheus(nodeClone, _.extend({}, opts, {
-                            opacity: 1,
+                            opacity: one,
                             complete: function() {
                                 nodeClone.parentNode.removeChild(nodeClone);
                                 wood(node);
@@ -296,8 +303,10 @@ module.exports = function(el, options) {
             _(toAdd).each(function(node) {
                 var clone = absclone(node);
 
-                clone.style.top = (-500 + Math.random() * 1500) + 'px';
-                clone.style.left = (-500 + Math.random() * 1500) + 'px'
+                _.extend({
+                    top: (-500 + Math.random() * 1500) + 'px',
+                    left: (-500 + Math.random() * 1500) + 'px'
+                });
 
 
                 glass(clone);
@@ -327,7 +336,7 @@ module.exports = function(el, options) {
             // sort
             _(el.childNodes).chain().filter(function(el) {
                 return !el.__clone__;
-            }).sortBy(sort|| function(el){
+            }).sortBy(sort || function(el) {
                 return _(nodes).indexOf(el);
             }).each(function(ele) {
                 el.appendChild(ele);
