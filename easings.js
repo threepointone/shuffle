@@ -4,6 +4,8 @@
  * Brian Crescimanno <brian.crescimanno@gmail.com>
  * Ken Snyder <kendsnyder@gmail.com>
  */
+
+"use strict";
 var easings = {
     easeOut: function(t) {
         return Math.sin(t * Math.PI / 2);
@@ -18,18 +20,18 @@ var easings = {
     },
 
     easeInStrong: function(t) {
-        return (t == 0) ? 0 : Math.pow(2, 10 * (t - 1));
+        return (t === 0) ? 0 : Math.pow(2, 10 * (t - 1));
     },
 
     easeOutBounce: function(pos) {
         if ((pos) < (1 / 2.75)) {
             return (7.5625 * pos * pos);
         } else if (pos < (2 / 2.75)) {
-            return (7.5625 * (pos -= (1.5 / 2.75)) * pos + .75);
+            return (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
         } else if (pos < (2.5 / 2.75)) {
-            return (7.5625 * (pos -= (2.25 / 2.75)) * pos + .9375);
+            return (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
         } else {
-            return (7.5625 * (pos -= (2.625 / 2.75)) * pos + .984375);
+            return (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
         }
     },
 
@@ -60,11 +62,11 @@ var easings = {
         if (pos < (1 / 2.75)) {
             return (7.5625 * pos * pos);
         } else if (pos < (2 / 2.75)) {
-            return 2 - (7.5625 * (pos -= (1.5 / 2.75)) * pos + .75);
+            return 2 - (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
         } else if (pos < (2.5 / 2.75)) {
-            return 2 - (7.5625 * (pos -= (2.25 / 2.75)) * pos + .9375);
+            return 2 - (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
         } else {
-            return 2 - (7.5625 * (pos -= (2.625 / 2.75)) * pos + .984375);
+            return 2 - (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
         }
     },
 
@@ -91,7 +93,7 @@ var easings = {
     },
 
     pulse: function(pos, pulses) {
-        return (-Math.cos((pos * ((pulses || 5) - .5) * 2) * Math.PI) / 2) + .5;
+        return (-Math.cos((pos * ((pulses || 5) - 0.5) * 2) * Math.PI) / 2) + 0.5;
     },
 
     wobble: function(pos) {
@@ -103,7 +105,7 @@ var easings = {
     },
 
     flicker: function(pos) {
-        var pos = pos + (Math.random() - 0.5) / 5;
+        pos = pos + (Math.random() - 0.5) / 5;
         return easings.sinusoidal(pos < 0 ? 0 : pos > 1 ? 1 : pos);
     },
 

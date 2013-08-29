@@ -37,6 +37,9 @@
             shuffle = require('./index.js')(container, {
                 compare: function(el) {
                     return el.getAttribute('data-val');
+                },
+                sort: function(el){
+                    return parseInt(el.getAttribute('data-val'), 10);
                 }
             }),
             _ = require('underscore');
@@ -70,12 +73,12 @@
             div.innerHTML = val;
             div.setAttribute('data-val', val);
             div.setAttribute('data-time', time);
-            div.style.backgroundColor = randomColor();
+            // div.style.backgroundColor = randomColor();
             return div;
         }
 
         function randArr() {
-            return _(50).chain().times(div).value().slice(Math.random()*40|0);
+            return _(30).chain().times(div).shuffle().value().slice(Math.random()*10|0);
         }
 
         function randomColor(){

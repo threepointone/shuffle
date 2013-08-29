@@ -1,7 +1,7 @@
 "use strict";
 var _ = require('underscore'),
     morpheus = require('morpheus'),
-    easing = require('./easings.js').easeOut;
+    easing = require('./easings.js').sinusoidal;
 
 
 var zero = 0;
@@ -52,10 +52,12 @@ module.exports = function(el, options) {
     var compare = options.compare || _.identity;
     var sort = options.sort;
     var union = options.union || false;
+    var duration = options.duration || function(){ return (Math.random()*800) + 200;};
+    var selector = options.selector;
 
     return {
         add: function(nodes) {
-            var children = _(el.childNodes).filter(function(el) {
+            var children = _(selector? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
                 return !el.__clone__;
             });
 
@@ -98,7 +100,7 @@ module.exports = function(el, options) {
                             left: -500 + Math.random() * 1500,
                             opacity: zero,
                             easing: easing,
-                            duration: 200 + (Math.random() * 800),
+                            duration: duration(),
                             complete: function() {
                                 clone.parentNode.removeChild(clone);
                             }
@@ -125,10 +127,10 @@ module.exports = function(el, options) {
                 glass(node);
                 glass(child);
 
-                el.appendChild(node);
+                child.parentNode.appendChild(node);
 
-                el.appendChild(nodeClone);
-                el.appendChild(childClone);
+                child.parentNode.appendChild(nodeClone);
+                child.parentNode.appendChild(childClone);
 
                 replace(child, node);
 
@@ -140,7 +142,7 @@ module.exports = function(el, options) {
                             top: node.offsetTop - m.top,
                             left: node.offsetLeft - m.left,
                             easing: easing,
-                            duration: 200 + (Math.random() * 800)
+                            duration: duration()
                         };
 
                         childClone.animation = morpheus(childClone, _.extend({}, opts, {
@@ -182,7 +184,7 @@ module.exports = function(el, options) {
                             top: node.offsetTop - m.top,
                             left: node.offsetLeft - m.left,
                             easing: easing,
-                            duration: 200 + (Math.random() * 800),
+                            duration: duration(),
                             complete: function() {
                                 clone.parentNode.removeChild(clone);
                                 wood(node);
@@ -193,7 +195,7 @@ module.exports = function(el, options) {
             });
 
             // sort
-            _(el.childNodes).chain().filter(function(el) {
+            _(selector? el.querySelectorAll(selector) : el.childNodes).chain().filter(function(el) {
                 return !el.__clone__;
             }).sortBy(sort || function(el) {
                 return _(nodes).indexOf(el);
@@ -205,7 +207,7 @@ module.exports = function(el, options) {
                 f();
             });
             // then reassign filtered el.childNodes to children
-            children = _(el.childNodes).filter(function(el) {
+            children = _(selector? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
                 return !el.__clone__;
             });
         }

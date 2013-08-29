@@ -5,6 +5,8 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
  * Brian Crescimanno <brian.crescimanno@gmail.com>
  * Ken Snyder <kendsnyder@gmail.com>
  */
+
+"use strict";
 var easings = {
     easeOut: function(t) {
         return Math.sin(t * Math.PI / 2);
@@ -19,18 +21,18 @@ var easings = {
     },
 
     easeInStrong: function(t) {
-        return (t == 0) ? 0 : Math.pow(2, 10 * (t - 1));
+        return (t === 0) ? 0 : Math.pow(2, 10 * (t - 1));
     },
 
     easeOutBounce: function(pos) {
         if ((pos) < (1 / 2.75)) {
             return (7.5625 * pos * pos);
         } else if (pos < (2 / 2.75)) {
-            return (7.5625 * (pos -= (1.5 / 2.75)) * pos + .75);
+            return (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
         } else if (pos < (2.5 / 2.75)) {
-            return (7.5625 * (pos -= (2.25 / 2.75)) * pos + .9375);
+            return (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
         } else {
-            return (7.5625 * (pos -= (2.625 / 2.75)) * pos + .984375);
+            return (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
         }
     },
 
@@ -61,11 +63,11 @@ var easings = {
         if (pos < (1 / 2.75)) {
             return (7.5625 * pos * pos);
         } else if (pos < (2 / 2.75)) {
-            return 2 - (7.5625 * (pos -= (1.5 / 2.75)) * pos + .75);
+            return 2 - (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
         } else if (pos < (2.5 / 2.75)) {
-            return 2 - (7.5625 * (pos -= (2.25 / 2.75)) * pos + .9375);
+            return 2 - (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
         } else {
-            return 2 - (7.5625 * (pos -= (2.625 / 2.75)) * pos + .984375);
+            return 2 - (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
         }
     },
 
@@ -92,7 +94,7 @@ var easings = {
     },
 
     pulse: function(pos, pulses) {
-        return (-Math.cos((pos * ((pulses || 5) - .5) * 2) * Math.PI) / 2) + .5;
+        return (-Math.cos((pos * ((pulses || 5) - 0.5) * 2) * Math.PI) / 2) + 0.5;
     },
 
     wobble: function(pos) {
@@ -104,7 +106,7 @@ var easings = {
     },
 
     flicker: function(pos) {
-        var pos = pos + (Math.random() - 0.5) / 5;
+        pos = pos + (Math.random() - 0.5) / 5;
         return easings.sinusoidal(pos < 0 ? 0 : pos > 1 ? 1 : pos);
     },
 
@@ -122,7 +124,7 @@ module.exports = easings;
 "use strict";
 var _ = require('underscore'),
     morpheus = require('morpheus'),
-    easing = require('./easings.js').easeOut;
+    easing = require('./easings.js').sinusoidal;
 
 
 var zero = 0;
@@ -173,10 +175,12 @@ module.exports = function(el, options) {
     var compare = options.compare || _.identity;
     var sort = options.sort;
     var union = options.union || false;
+    var duration = options.duration || function(){ return (Math.random()*800) + 200;};
+    var selector = options.selector;
 
     return {
         add: function(nodes) {
-            var children = _(el.childNodes).filter(function(el) {
+            var children = _(selector? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
                 return !el.__clone__;
             });
 
@@ -219,7 +223,7 @@ module.exports = function(el, options) {
                             left: -500 + Math.random() * 1500,
                             opacity: zero,
                             easing: easing,
-                            duration: 200 + (Math.random() * 800),
+                            duration: duration(),
                             complete: function() {
                                 clone.parentNode.removeChild(clone);
                             }
@@ -246,10 +250,10 @@ module.exports = function(el, options) {
                 glass(node);
                 glass(child);
 
-                el.appendChild(node);
+                child.parentNode.appendChild(node);
 
-                el.appendChild(nodeClone);
-                el.appendChild(childClone);
+                child.parentNode.appendChild(nodeClone);
+                child.parentNode.appendChild(childClone);
 
                 replace(child, node);
 
@@ -261,7 +265,7 @@ module.exports = function(el, options) {
                             top: node.offsetTop - m.top,
                             left: node.offsetLeft - m.left,
                             easing: easing,
-                            duration: 200 + (Math.random() * 800)
+                            duration: duration()
                         };
 
                         childClone.animation = morpheus(childClone, _.extend({}, opts, {
@@ -303,7 +307,7 @@ module.exports = function(el, options) {
                             top: node.offsetTop - m.top,
                             left: node.offsetLeft - m.left,
                             easing: easing,
-                            duration: 200 + (Math.random() * 800),
+                            duration: duration(),
                             complete: function() {
                                 clone.parentNode.removeChild(clone);
                                 wood(node);
@@ -314,7 +318,7 @@ module.exports = function(el, options) {
             });
 
             // sort
-            _(el.childNodes).chain().filter(function(el) {
+            _(selector? el.querySelectorAll(selector) : el.childNodes).chain().filter(function(el) {
                 return !el.__clone__;
             }).sortBy(sort || function(el) {
                 return _(nodes).indexOf(el);
@@ -326,7 +330,7 @@ module.exports = function(el, options) {
                 f();
             });
             // then reassign filtered el.childNodes to children
-            children = _(el.childNodes).filter(function(el) {
+            children = _(selector? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
                 return !el.__clone__;
             });
         }
