@@ -11,6 +11,7 @@ function replace(older, newer) {
     var parent = older.parentNode;
     parent.insertBefore(newer, older);
     parent.removeChild(older);
+    return newer;
 }
 
 function glass(el) {
@@ -52,12 +53,14 @@ module.exports = function(el, options) {
     var compare = options.compare || _.identity;
     var sort = options.sort;
     var union = options.union || false;
-    var duration = options.duration || function(){ return (Math.random()*800) + 200;};
+    var duration = options.duration || function() {
+            return (Math.random() * 800) + 200;
+        };
     var selector = options.selector;
 
     return {
         add: function(nodes) {
-            var children = _(selector? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
+            var children = _(selector ? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
                 return !el.__clone__;
             });
 
@@ -115,7 +118,7 @@ module.exports = function(el, options) {
                     childClone = absclone(child),
                     node = _.find(nodes, function(node) {
                         return compare(node) === compare(child);
-                    }), 
+                    }),
                     nodeClone = absclone(node);
 
                 _.extend(nodeClone.style, {
@@ -132,15 +135,15 @@ module.exports = function(el, options) {
                 child.parentNode.appendChild(nodeClone);
                 child.parentNode.appendChild(childClone);
 
-                replace(child, node);
+                var target = replace(child, node);
 
                 queue.push(function() {
                     setTimeout(function() {
                         var m = margin(node);
 
                         var opts = {
-                            top: node.offsetTop - m.top,
-                            left: node.offsetLeft - m.left,
+                            top: target.offsetTop - m.top,
+                            left: target.offsetLeft - m.left,
                             easing: easing,
                             duration: duration()
                         };
@@ -156,7 +159,7 @@ module.exports = function(el, options) {
                             opacity: one,
                             complete: function() {
                                 nodeClone.parentNode.removeChild(nodeClone);
-                                wood(node);
+                                wood(target);
                             }
                         }));
                     }, Math.random() * 200);
@@ -195,7 +198,7 @@ module.exports = function(el, options) {
             });
 
             // sort
-            _(selector? el.querySelectorAll(selector) : el.childNodes).chain().filter(function(el) {
+            _(selector ? el.querySelectorAll(selector) : el.childNodes).chain().filter(function(el) {
                 return !el.__clone__;
             }).sortBy(sort || function(el) {
                 return _(nodes).indexOf(el);
@@ -207,7 +210,7 @@ module.exports = function(el, options) {
                 f();
             });
             // then reassign filtered el.childNodes to children
-            children = _(selector? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
+            children = _(selector ? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
                 return !el.__clone__;
             });
         }
