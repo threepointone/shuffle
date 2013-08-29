@@ -1,3 +1,4 @@
+"use strict";
 var _ = require('underscore'),
     morpheus = require('morpheus'),
     easing = require('./easings.js').easeOut;
@@ -5,18 +6,6 @@ var _ = require('underscore'),
 
 var zero = 0;
 var one = 1;
-
-
-function show(el) {
-    el.style.display = el.__display || '';
-    return el;
-}
-
-function hide(el) {
-    el.__display = el.style.display !== 'none' ? el.style.display : '';
-    el.style.display = 'none';
-    return el;
-}
 
 function replace(older, newer) {
     var parent = older.parentNode;
@@ -58,7 +47,7 @@ function absclone(el) {
 }
 
 module.exports = function(el, options) {
-    options || (options || {});
+    options = options || {};
 
 
     var compare = options.compare || _.identity;
@@ -95,28 +84,29 @@ module.exports = function(el, options) {
             // and, let's do the insert
             var queue = [];
 
-            (!union) && _(toLeave).each(function(child) {
-                var clone = absclone(child);
-                child.parentNode.appendChild(clone);
-                glass(child);
-                queue.push(function() {
-                    child.parentNode.removeChild(child);
+            if (!union) {
+                _(toLeave).each(function(child) {
+                    var clone = absclone(child);
+                    child.parentNode.appendChild(clone);
+                    glass(child);
+                    queue.push(function() {
+                        child.parentNode.removeChild(child);
+                    });
+
+                    setTimeout(function() {
+                        clone.animation = morpheus(clone, {
+                            top: -500 + Math.random() * 1500,
+                            left: -500 + Math.random() * 1500,
+                            opacity: zero,
+                            easing: easing,
+                            duration: 200 + (Math.random() * 800),
+                            complete: function() {
+                                clone.parentNode.removeChild(clone);
+                            }
+                        });
+                    }, Math.random() * 200);
                 });
-
-                setTimeout(function() {
-                    clone.animation = morpheus(clone, {
-                        top: -500 + Math.random() * 1500,
-                        left: -500 + Math.random() * 1500,
-                        opacity: zero,
-                        easing: easing,
-                        duration: 200 + (Math.random() * 800),
-                        complete: function() {
-                            clone.parentNode.removeChild(clone);
-                        }
-                    })
-                }, Math.random() * 200);
-
-            });
+            }
 
             _(toMove).each(function(child) {
 
@@ -148,7 +138,6 @@ module.exports = function(el, options) {
 
                 queue.push(function() {
                     setTimeout(function() {
-
                         var m = margin(node);
 
                         var opts = {
@@ -172,11 +161,8 @@ module.exports = function(el, options) {
                                 wood(node);
                             }
                         }));
-
                     }, Math.random() * 200);
-
                 });
-
             });
 
             _(toAdd).each(function(node) {
@@ -186,7 +172,6 @@ module.exports = function(el, options) {
                     top: (-500 + Math.random() * 1500) + 'px',
                     left: (-500 + Math.random() * 1500) + 'px'
                 });
-
 
                 glass(clone);
                 glass(node);
@@ -207,8 +192,7 @@ module.exports = function(el, options) {
                                 wood(node);
                             }
                         });
-                    }, Math.random() * 200)
-
+                    }, Math.random() * 200);
                 });
             });
 
