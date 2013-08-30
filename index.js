@@ -25,8 +25,8 @@ function wood(el) {
 function margin(el) {
     var style = el.currentStyle || window.getComputedStyle(el);
     return {
-        top: parseInt(style.marginTop, 10) ,
-        left: parseInt(style.marginLeft, 10) 
+        top: parseInt(style.marginTop, 10),
+        left: parseInt(style.marginLeft, 10)
     };
 }
 
@@ -60,36 +60,33 @@ module.exports = function(el, options) {
 
     var selector = options.selector;
 
-    var selectNodes = function(){
+    var selectNodes = function() {
         return _(selector ? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
-                return !el.__clone__;
-            });
+            return !el.__clone__;
+        });
     };
-    
+
 
     return {
         add: function(nodes) {
             var children = selectNodes();
 
             var toAdd = _(nodes).filter(function(node) {
-                var match = _(children).find(function(child) {
+                return !_(children).find(function(child) {
                     return compare(child) === compare(node);
                 });
-                return !match;
             });
 
             var toLeave = _(children).filter(function(child) {
-                var match = _(nodes).find(function(node) {
+                return !_(nodes).find(function(node) {
                     return compare(child) === compare(node);
                 });
-                return !match;
             });
 
             var toMove = _(children).filter(function(child) {
-                var match = _(nodes).find(function(node) {
+                return !!_(nodes).find(function(node) {
                     return compare(child) === compare(node);
                 });
-                return !!match;
             });
 
             // and, let's do the insert
@@ -116,6 +113,34 @@ module.exports = function(el, options) {
                             }
                         });
                     }, Math.random() * 200);
+                });
+            } else {
+                // just move them around
+                _(toLeave).each(function(child) {
+                    var clone = absclone(child);
+                    clone.style.opacity = one;
+
+                    glass(child);
+
+                    child.parentNode.appendChild(clone);
+
+                    var m = margin(child);
+                    queue.push(function() {
+                        setTimeout(function() {
+                            clone.animation = morpheus(clone, {
+                                top: child.offsetTop - m.top,
+                                left: child.offsetLeft - m.left,
+                                easing: easing,
+                                duration: duration(),
+                                complete: function() {
+                                    clone.parentNode.removeChild(clone);
+                                    wood(child);
+                                }
+
+                            });
+                        }, Math.random() * 200);
+
+                    });
                 });
             }
 

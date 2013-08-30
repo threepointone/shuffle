@@ -47,7 +47,8 @@
                 },
                 sort: function(el){
                     return parseInt(el.getAttribute('data-val'), 10);
-                }
+                },
+                union: false
             }),
             start = Date.now(),
             _ = require('underscore');
@@ -72,11 +73,14 @@
 
         function div(val) {
             var el = document.createElement('div');
-            el.innerHTML = sub('<div class="box" data-val="{val}" data-time="{time}" style="background-color:{color}">{val} <br/> <span class="time">{time} secs</span></div>', {
+            var tpl = '<div class="box" data-val="{val}" data-time="{time}" style="background-color:{color}">{val} <br/> <span class="time">{time} secs</span></div>';
+
+            el.innerHTML = sub(tpl, {
                 val: val,
                 time: ((Date.now() - start)/1000 )|0,
                 color: randomColor()
             });
+
             return el.childNodes[0];          
         }
 
