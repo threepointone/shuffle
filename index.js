@@ -164,7 +164,7 @@ module.exports = function(el, options) {
 
                 child.parentNode.appendChild(nodeClone);
                 child.parentNode.appendChild(childClone);
-                var target = replace(child, node);
+                var target = replace(child, replaceWith(child, node));
 
                 queue.push(function() {
                     setTimeout(function() {

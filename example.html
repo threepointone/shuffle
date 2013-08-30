@@ -2,6 +2,7 @@
 <html>
 <head>
     <title></title>
+    <meta name="viewport" content="width=device-width, user-scalable=false;">
     <style type="text/css">
         html, body{
             margin:0;
@@ -17,8 +18,8 @@
             font-size:50px;
             display: block;
             position: relative;
-            width:160px;
-            height:160px;
+            width:120px;
+            height:120px;
             padding:20px;
             background-color: gray;
             float: left;
@@ -47,9 +48,6 @@
                 },
                 sort: function(el) {
                     return parseInt(el.getAttribute('data-val'), 10);
-                },
-                replaceWith: function(older, newer){
-                    return older;
                 },
                 union: false
             }),
