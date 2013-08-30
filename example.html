@@ -25,7 +25,14 @@
             margin-left: 10px;
             margin-top: 10px;
             opacity:1;
+        }
 
+        .box .time{
+            font-size:14px;
+            position: absolute;
+            bottom: 0;
+            right:0;
+            margin: 10px;
         }
     </style>
 </head>
@@ -42,6 +49,7 @@
                     return parseInt(el.getAttribute('data-val'), 10);
                 }
             }),
+            start = Date.now(),
             _ = require('underscore');
 
 
@@ -49,40 +57,38 @@
         _.each(randArr(), function(el) {
             container.appendChild(el);
         });
-
-
         var ctr = 0;
-        var intvl = setInterval(function() {
-            ctr++;
-            
-            // shove some new nodes into the container
-            shuffle.add(randArr());
 
-            // run this loop 30 times. because.
-            if (ctr === 30) {
-                clearInterval(intvl);
-            }
+        setInterval(function() {
+            ctr++;
+            (ctr <10) && shuffle.add(randArr());        
         }, 2000);
 
 
-
-        function div(val) {
-            var div = document.createElement('div');
-            div.className = 'box';
-            var time = Date.now();
-            div.innerHTML = val;
-            div.setAttribute('data-val', val);
-            div.setAttribute('data-time', time);
-            // div.style.backgroundColor = randomColor();
-            return div;
+        // helpers
+        function randArr() {
+            return _(30).chain().times(div).shuffle().value().slice(10);
         }
 
-        function randArr() {
-            return _(30).chain().times(div).shuffle().value().slice(Math.random()*10|0);
+        function div(val) {
+            var el = document.createElement('div');
+            el.innerHTML = sub('<div class="box" data-val="{val}" data-time="{time}" style="background-color:{color}">{val} <br/> <span class="time">{time} secs</span></div>', {
+                val: val,
+                time: ((Date.now() - start)/1000 )|0,
+                color: randomColor()
+            });
+            return el.childNodes[0];          
         }
 
         function randomColor(){
             return '#'+Math.floor(Math.random()*16777215).toString(16);
+        }
+
+        function sub(str, locals) {
+            var SUBREGEX = /\{\s*([^|}]+?)\s*(?:\|([^}]*))?\s*\}/g;
+            return str.replace ? str.replace(SUBREGEX, function(match, key) {
+                return _.isUndefined(locals[key]) ? match : locals[key];
+            }) : str;
         }
 
     </script>

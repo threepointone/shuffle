@@ -148,8 +148,8 @@ function wood(el) {
 function margin(el) {
     var style = el.currentStyle || window.getComputedStyle(el);
     return {
-        top: parseInt(style.marginTop, 10) | 0,
-        left: parseInt(style.marginLeft, 10) | 0
+        top: parseInt(style.marginTop, 10) ,
+        left: parseInt(style.marginLeft, 10) 
     };
 }
 
@@ -176,16 +176,23 @@ module.exports = function(el, options) {
     var compare = options.compare || _.identity;
     var sort = options.sort;
     var union = options.union || false;
+    var swap = options.swap || replace;
     var duration = options.duration || function() {
             return (Math.random() * 800) + 200;
         };
+
     var selector = options.selector;
+
+    var selectNodes = function(){
+        return _(selector ? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
+                return !el.__clone__;
+            });
+    };
+    
 
     return {
         add: function(nodes) {
-            var children = _(selector ? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
-                return !el.__clone__;
-            });
+            var children = selectNodes();
 
             var toAdd = _(nodes).filter(function(node) {
                 var match = _(children).find(function(child) {
@@ -257,8 +264,7 @@ module.exports = function(el, options) {
 
                 child.parentNode.appendChild(nodeClone);
                 child.parentNode.appendChild(childClone);
-
-                var target = replace(child, node);
+                var target = swap(child, node);
 
                 queue.push(function() {
                     setTimeout(function() {
@@ -321,9 +327,7 @@ module.exports = function(el, options) {
             });
 
             // sort
-            _(selector ? el.querySelectorAll(selector) : el.childNodes).chain().filter(function(el) {
-                return !el.__clone__;
-            }).sortBy(sort || function(el) {
+            _(selectNodes()).chain().sortBy(sort || function(el) {
                 return _(nodes).indexOf(el);
             }).each(function(ele) {
                 el.appendChild(ele);
@@ -333,16 +337,12 @@ module.exports = function(el, options) {
                 f();
             });
             // then reassign filtered el.childNodes to children
-            children = _(selector ? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
-                return !el.__clone__;
-            });
+            children = selectNodes();
         }
     };
 };
 },{"./easings.js":1,"morpheus":"ezqsfE","underscore":"MJVfUe"}],"./index.js":[function(require,module,exports){
 module.exports=require('1SmzYX');
-},{}],"underscore":[function(require,module,exports){
-module.exports=require('MJVfUe');
 },{}],"ezqsfE":[function(require,module,exports){
 /*!
   * Morpheus - A Brilliant Animator
@@ -747,6 +747,8 @@ module.exports=require('MJVfUe');
 
 });
 
+},{}],"morpheus":[function(require,module,exports){
+module.exports=require('ezqsfE');
 },{}],"MJVfUe":[function(require,module,exports){
 //     Underscore.js 1.5.1
 //     http://underscorejs.org
@@ -1995,7 +1997,7 @@ module.exports=require('MJVfUe');
 
 }).call(this);
 
-},{}],"morpheus":[function(require,module,exports){
-module.exports=require('ezqsfE');
+},{}],"underscore":[function(require,module,exports){
+module.exports=require('MJVfUe');
 },{}]},{},[])
 ;
