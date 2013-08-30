@@ -45,8 +45,11 @@
                 compare: function(el) {
                     return el.getAttribute('data-val');
                 },
-                sort: function(el){
+                sort: function(el) {
                     return parseInt(el.getAttribute('data-val'), 10);
+                },
+                replaceWith: function(older, newer){
+                    return older;
                 },
                 union: false
             }),
@@ -62,11 +65,12 @@
 
         setInterval(function() {
             ctr++;
-            (ctr <10) && shuffle.add(randArr());        
+            (ctr < 10) && shuffle.add(randArr());
         }, 2000);
 
 
-        // helpers
+         // helpers
+
         function randArr() {
             return _(30).chain().times(div).shuffle().value().slice(10);
         }
@@ -77,15 +81,15 @@
 
             el.innerHTML = sub(tpl, {
                 val: val,
-                time: ((Date.now() - start)/1000 )|0,
+                time: ((Date.now() - start) / 1000) | 0,
                 color: randomColor()
             });
 
-            return el.childNodes[0];          
+            return el.childNodes[0];
         }
 
-        function randomColor(){
-            return '#'+Math.floor(Math.random()*16777215).toString(16);
+        function randomColor() {
+            return '#' + Math.floor(Math.random() * 16777215).toString(16);
         }
 
         function sub(str, locals) {
