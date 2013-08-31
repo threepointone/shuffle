@@ -3,39 +3,7 @@
 <head>
     <title></title>
     <meta name="viewport" content="width=device-width, user-scalable=false;">
-    <style type="text/css">
-        html, body{
-            margin:0;
-            padding: 0;
-            font-family: helvetica, arial, sans-serif;
-        }
-
-        #container{
-            position: relative;
-        }
-
-        .box{
-            font-size:50px;
-            display: block;
-            position: relative;
-            width:120px;
-            height:120px;
-            padding:20px;
-            background-color: gray;
-            float: left;
-            margin-left: 10px;
-            margin-top: 10px;
-            opacity:1;
-        }
-
-        .box .time{
-            font-size:14px;
-            position: absolute;
-            bottom: 0;
-            right:0;
-            margin: 10px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="example.css"/>
 </head>
 <body>
     <div id="container"></div>
@@ -59,12 +27,11 @@
         _.each(randArr(), function(el) {
             container.appendChild(el);
         });
-        var ctr = 0;
 
         setInterval(function() {
-            ctr++;
-            (ctr < 10) && shuffle.add(randArr());
+            shuffle.add(randArr());
         }, 2000);
+
 
 
          // helpers
@@ -80,7 +47,7 @@
             el.innerHTML = sub(tpl, {
                 val: val,
                 time: ((Date.now() - start) / 1000) | 0,
-                color: randomColor()
+                color: '#ccc'//randomColor()
             });
 
             return el.childNodes[0];

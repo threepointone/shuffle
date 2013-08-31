@@ -360,6 +360,12 @@ module.exports = function(el, options) {
             _.each(queue, function(f) {
                 f();
             });            
+        },
+        
+        fromString: function(str){
+            var div = document.createElement('div');
+            div.innerHTML = str;
+            return this.add(div.childNodes);
         }
     };
 };
