@@ -47,7 +47,7 @@
             el.innerHTML = sub(tpl, {
                 val: val,
                 time: ((Date.now() - start) / 1000) | 0,
-                color: '#ccc'//randomColor()
+                color: randomColor()
             });
 
             return el.childNodes[0];
