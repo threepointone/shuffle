@@ -1,4 +1,6 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"./index.js":[function(require,module,exports){
+module.exports=require('1SmzYX');
+},{}],2:[function(require,module,exports){
 /* The equations defined here are open source under BSD License.
  * http://www.robertpenner.com/easing_terms_of_use.html (c) 2003 Robert Penner
  * Adapted to single time-based by
@@ -369,11 +371,7 @@ module.exports = function(el, options) {
         }
     };
 };
-},{"./easings.js":1,"morpheus":"ezqsfE","underscore":"MJVfUe"}],"./index.js":[function(require,module,exports){
-module.exports=require('1SmzYX');
-},{}],"underscore":[function(require,module,exports){
-module.exports=require('MJVfUe');
-},{}],"ezqsfE":[function(require,module,exports){
+},{"./easings.js":2,"morpheus":4,"underscore":"MJVfUe"}],4:[function(require,module,exports){
 /*!
   * Morpheus - A Brilliant Animator
   * https://github.com/ded/morpheus - (c) Dustin Diaz 2011
@@ -2025,7 +2023,7 @@ module.exports=require('MJVfUe');
 
 }).call(this);
 
-},{}],"morpheus":[function(require,module,exports){
-module.exports=require('ezqsfE');
+},{}],"underscore":[function(require,module,exports){
+module.exports=require('MJVfUe');
 },{}]},{},[])
 ;
