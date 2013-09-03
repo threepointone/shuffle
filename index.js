@@ -257,14 +257,10 @@ function absclone(el) {
     return clone;
 }
 
-function lookupIterator(value) {
-    return (typeof value === 'function') ? value : function(obj) {
+function sortBy(obj, value, context) {
+    var iterator = (typeof value === 'function') ? value : function(obj) {
         return obj[value];
     };
-}
-
-function sortBy(obj, value, context) {
-    var iterator = lookupIterator(value);
     var sorted = _.map(obj, function(value, index, list) {
         return {
             value: value,
