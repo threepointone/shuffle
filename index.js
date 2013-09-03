@@ -1,83 +1,14 @@
 "use strict";
 var _ = require('fn'),
     morpheus = require('morpheus'),
-    easing = require('./easings.js').sinusoidal;
+    easing = function(pos) {
+        return (-Math.cos(pos * Math.PI) / 2) + 0.5;
+    };
 
 module.exports = shuffle;
 
 var zero = 0;
 var one = 1;
-
-function replace(older, newer) {
-    if (older === newer) {
-        return older;
-    }
-    var parent = older.parentNode;
-    parent.insertBefore(newer, older);
-    parent.removeChild(older);
-    return newer;
-}
-
-function glass(el) {
-    el.style.opacity = zero;
-}
-
-function wood(el) {
-    el.style.opacity = one;
-}
-
-function margin(el) {
-    var style = el.currentStyle || window.getComputedStyle(el);
-    return {
-        top: parseInt(style.marginTop, 10),
-        left: parseInt(style.marginLeft, 10)
-    };
-}
-
-function absclone(el) {
-    var clone = el.cloneNode(true);
-    var m = margin(el);
-
-    _.extend(clone.style, {
-        position: 'absolute',
-        top: (el.offsetTop - m.top) + 'px',
-        left: (el.offsetLeft - m.left) + 'px'
-    });
-
-    clone.className += ' clone';
-    clone.__clone__ = true; // a little hint for anyone else to ignore this. 
-
-    return clone;
-}
-
-function lookupIterator(value) {
-    return (typeof value === 'function') ? value : function(obj) {
-        return obj[value];
-    };
-}
-
-function sortBy(obj, value, context) {
-    var iterator = lookupIterator(value);
-    var sorted = _.map(obj, function(value, index, list) {
-        return {
-            value: value,
-            index: index,
-            criteria: iterator.call(context, value, index, list)
-        };
-    }).sort(function(left, right) {
-        var a = left.criteria;
-        var b = right.criteria;
-        if (a !== b) {
-            if (a > b || a === void 0) return 1;
-            if (a < b || b === void 0) return -1;
-        }
-        return left.index < right.index ? -1 : 1;
-    })
-
-    return _.map(sorted, function(el) {
-        return el.value
-    });
-}
 
 function shuffle(el, options) {
     options = options || {};
@@ -281,3 +212,76 @@ function shuffle(el, options) {
         }
     };
 };
+
+// herlpers
+
+function replace(older, newer) {
+    if (older === newer) {
+        return older;
+    }
+    var parent = older.parentNode;
+    parent.insertBefore(newer, older);
+    parent.removeChild(older);
+    return newer;
+}
+
+function glass(el) {
+    el.style.opacity = zero;
+}
+
+function wood(el) {
+    el.style.opacity = one;
+}
+
+function margin(el) {
+    var style = el.currentStyle || window.getComputedStyle(el);
+    return {
+        top: parseInt(style.marginTop, 10),
+        left: parseInt(style.marginLeft, 10)
+    };
+}
+
+function absclone(el) {
+    var clone = el.cloneNode(true);
+    var m = margin(el);
+
+    _.extend(clone.style, {
+        position: 'absolute',
+        top: (el.offsetTop - m.top) + 'px',
+        left: (el.offsetLeft - m.left) + 'px'
+    });
+
+    clone.className += ' clone';
+    clone.__clone__ = true; // a little hint for anyone else to ignore this. 
+
+    return clone;
+}
+
+function lookupIterator(value) {
+    return (typeof value === 'function') ? value : function(obj) {
+        return obj[value];
+    };
+}
+
+function sortBy(obj, value, context) {
+    var iterator = lookupIterator(value);
+    var sorted = _.map(obj, function(value, index, list) {
+        return {
+            value: value,
+            index: index,
+            criteria: iterator.call(context, value, index, list)
+        };
+    }).sort(function(left, right) {
+        var a = left.criteria;
+        var b = right.criteria;
+        if (a !== b) {
+            if (a > b || a === void 0) return 1;
+            if (a < b || b === void 0) return -1;
+        }
+        return left.index < right.index ? -1 : 1;
+    })
+
+    return _.map(sorted, function(el) {
+        return el.value
+    });
+}

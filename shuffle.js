@@ -1,208 +1,15 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"./index.js":[function(require,module,exports){
-module.exports=require('1SmzYX');
-},{}],2:[function(require,module,exports){
-/* The equations defined here are open source under BSD License.
- * http://www.robertpenner.com/easing_terms_of_use.html (c) 2003 Robert Penner
- * Adapted to single time-based by
- * Brian Crescimanno <brian.crescimanno@gmail.com>
- * Ken Snyder <kendsnyder@gmail.com>
- */
-
-"use strict";
-var easings = {
-    easeOut: function(t) {
-        return Math.sin(t * Math.PI / 2);
-    },
-
-    easeOutStrong: function(t) {
-        return (t == 1) ? 1 : 1 - Math.pow(2, -10 * t);
-    },
-
-    easeIn: function(t) {
-        return t * t;
-    },
-
-    easeInStrong: function(t) {
-        return (t === 0) ? 0 : Math.pow(2, 10 * (t - 1));
-    },
-
-    easeOutBounce: function(pos) {
-        if ((pos) < (1 / 2.75)) {
-            return (7.5625 * pos * pos);
-        } else if (pos < (2 / 2.75)) {
-            return (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
-        } else if (pos < (2.5 / 2.75)) {
-            return (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
-        } else {
-            return (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
-        }
-    },
-
-    easeInBack: function(pos) {
-        var s = 1.70158;
-        return (pos) * pos * ((s + 1) * pos - s);
-    },
-
-    easeOutBack: function(pos) {
-        var s = 1.70158;
-        return (pos = pos - 1) * pos * ((s + 1) * pos + s) + 1;
-    },
-
-    bounce: function(t) {
-        if (t < (1 / 2.75)) {
-            return 7.5625 * t * t;
-        }
-        if (t < (2 / 2.75)) {
-            return 7.5625 * (t -= (1.5 / 2.75)) * t + 0.75;
-        }
-        if (t < (2.5 / 2.75)) {
-            return 7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375;
-        }
-        return 7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375;
-    },
-
-    bouncePast: function(pos) {
-        if (pos < (1 / 2.75)) {
-            return (7.5625 * pos * pos);
-        } else if (pos < (2 / 2.75)) {
-            return 2 - (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
-        } else if (pos < (2.5 / 2.75)) {
-            return 2 - (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
-        } else {
-            return 2 - (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
-        }
-    },
-
-    swingTo: function(pos) {
-        var s = 1.70158;
-        return (pos -= 1) * pos * ((s + 1) * pos + s) + 1;
-    },
-
-    swingFrom: function(pos) {
-        var s = 1.70158;
-        return pos * pos * ((s + 1) * pos - s);
-    },
-
-    elastic: function(pos) {
-        return -1 * Math.pow(4, -8 * pos) * Math.sin((pos * 6 - 1) * (2 * Math.PI) / 2) + 1;
-    },
-
-    spring: function(pos) {
-        return 1 - (Math.cos(pos * 4.5 * Math.PI) * Math.exp(-pos * 6));
-    },
-
-    blink: function(pos, blinks) {
-        return Math.round(pos * (blinks || 5)) % 2;
-    },
-
-    pulse: function(pos, pulses) {
-        return (-Math.cos((pos * ((pulses || 5) - 0.5) * 2) * Math.PI) / 2) + 0.5;
-    },
-
-    wobble: function(pos) {
-        return (-Math.cos(pos * Math.PI * (9 * pos)) / 2) + 0.5;
-    },
-
-    sinusoidal: function(pos) {
-        return (-Math.cos(pos * Math.PI) / 2) + 0.5;
-    },
-
-    flicker: function(pos) {
-        pos = pos + (Math.random() - 0.5) / 5;
-        return easings.sinusoidal(pos < 0 ? 0 : pos > 1 ? 1 : pos);
-    },
-
-    mirror: function(pos) {
-        if (pos < 0.5)
-            return easings.sinusoidal(pos * 2);
-        else
-            return easings.sinusoidal(1 - (pos - 0.5) * 2);
-    }
-
-};
-
-module.exports = easings;
-},{}],"1SmzYX":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"1SmzYX":[function(require,module,exports){
 "use strict";
 var _ = require('fn'),
     morpheus = require('morpheus'),
-    easing = require('./easings.js').sinusoidal;
+    easing = function(pos) {
+        return (-Math.cos(pos * Math.PI) / 2) + 0.5;
+    };
 
 module.exports = shuffle;
 
 var zero = 0;
 var one = 1;
-
-function replace(older, newer) {
-    if (older === newer) {
-        return older;
-    }
-    var parent = older.parentNode;
-    parent.insertBefore(newer, older);
-    parent.removeChild(older);
-    return newer;
-}
-
-function glass(el) {
-    el.style.opacity = zero;
-}
-
-function wood(el) {
-    el.style.opacity = one;
-}
-
-function margin(el) {
-    var style = el.currentStyle || window.getComputedStyle(el);
-    return {
-        top: parseInt(style.marginTop, 10),
-        left: parseInt(style.marginLeft, 10)
-    };
-}
-
-function absclone(el) {
-    var clone = el.cloneNode(true);
-    var m = margin(el);
-
-    _.extend(clone.style, {
-        position: 'absolute',
-        top: (el.offsetTop - m.top) + 'px',
-        left: (el.offsetLeft - m.left) + 'px'
-    });
-
-    clone.className += ' clone';
-    clone.__clone__ = true; // a little hint for anyone else to ignore this. 
-
-    return clone;
-}
-
-function lookupIterator(value) {
-    return (typeof value === 'function') ? value : function(obj) {
-        return obj[value];
-    };
-}
-
-function sortBy(obj, value, context) {
-    var iterator = lookupIterator(value);
-    var sorted = _.map(obj, function(value, index, list) {
-        return {
-            value: value,
-            index: index,
-            criteria: iterator.call(context, value, index, list)
-        };
-    }).sort(function(left, right) {
-        var a = left.criteria;
-        var b = right.criteria;
-        if (a !== b) {
-            if (a > b || a === void 0) return 1;
-            if (a < b || b === void 0) return -1;
-        }
-        return left.index < right.index ? -1 : 1;
-    })
-
-    return _.map(sorted, function(el) {
-        return el.value
-    });
-}
 
 function shuffle(el, options) {
     options = options || {};
@@ -406,7 +213,83 @@ function shuffle(el, options) {
         }
     };
 };
-},{"./easings.js":2,"fn":"vLmZuc","morpheus":5}],"vLmZuc":[function(require,module,exports){
+
+// herlpers
+
+function replace(older, newer) {
+    if (older === newer) {
+        return older;
+    }
+    var parent = older.parentNode;
+    parent.insertBefore(newer, older);
+    parent.removeChild(older);
+    return newer;
+}
+
+function glass(el) {
+    el.style.opacity = zero;
+}
+
+function wood(el) {
+    el.style.opacity = one;
+}
+
+function margin(el) {
+    var style = el.currentStyle || window.getComputedStyle(el);
+    return {
+        top: parseInt(style.marginTop, 10),
+        left: parseInt(style.marginLeft, 10)
+    };
+}
+
+function absclone(el) {
+    var clone = el.cloneNode(true);
+    var m = margin(el);
+
+    _.extend(clone.style, {
+        position: 'absolute',
+        top: (el.offsetTop - m.top) + 'px',
+        left: (el.offsetLeft - m.left) + 'px'
+    });
+
+    clone.className += ' clone';
+    clone.__clone__ = true; // a little hint for anyone else to ignore this. 
+
+    return clone;
+}
+
+function lookupIterator(value) {
+    return (typeof value === 'function') ? value : function(obj) {
+        return obj[value];
+    };
+}
+
+function sortBy(obj, value, context) {
+    var iterator = lookupIterator(value);
+    var sorted = _.map(obj, function(value, index, list) {
+        return {
+            value: value,
+            index: index,
+            criteria: iterator.call(context, value, index, list)
+        };
+    }).sort(function(left, right) {
+        var a = left.criteria;
+        var b = right.criteria;
+        if (a !== b) {
+            if (a > b || a === void 0) return 1;
+            if (a < b || b === void 0) return -1;
+        }
+        return left.index < right.index ? -1 : 1;
+    })
+
+    return _.map(sorted, function(el) {
+        return el.value
+    });
+}
+
+},{"fn":"vLmZuc","morpheus":4}],"./index.js":[function(require,module,exports){
+module.exports=require('1SmzYX');
+},{}],"vLmZuc":[function(require,module,exports){
 // fair caveat, this is code collected from various places, and I don't have tests yet. YET.
 
 "use strict";
@@ -628,7 +511,7 @@ each(module.exports, function(fn, name) {
 chain.prototype.val = function() {
     return this._obj;
 };
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /*!
   * Morpheus - A Brilliant Animator
   * https://github.com/ded/morpheus - (c) Dustin Diaz 2011
