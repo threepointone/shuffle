@@ -3,11 +3,10 @@
   "version": "0.0.0",
   "description": "do the dom shuffle",
   "main": "index.js",
-  
   "author": "threepointone@gmail.com",
   "license": "BSD",
   "dependencies": {
     "morpheus": "~0.6.8",
-    "underscore": "~1.5.1"
+    "fn": "git://github.com/threepointone/fn.git"
   }
 }

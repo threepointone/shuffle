@@ -1,13 +1,17 @@
 "use strict";
-var _ = require('underscore'),
+var _ = require('fn'),
     morpheus = require('morpheus'),
     easing = require('./easings.js').sinusoidal;
+
+module.exports = shuffle;
 
 var zero = 0;
 var one = 1;
 
 function replace(older, newer) {
-    if(older === newer){ return older; }
+    if (older === newer) {
+        return older;
+    }
     var parent = older.parentNode;
     parent.insertBefore(newer, older);
     parent.removeChild(older);
@@ -46,13 +50,44 @@ function absclone(el) {
     return clone;
 }
 
-module.exports = function(el, options) {
+function lookupIterator(value) {
+    return (typeof value === 'function') ? value : function(obj) {
+        return obj[value];
+    };
+}
+
+function sortBy(obj, value, context) {
+    var iterator = lookupIterator(value);
+    var sorted = _.map(obj, function(value, index, list) {
+        return {
+            value: value,
+            index: index,
+            criteria: iterator.call(context, value, index, list)
+        };
+    }).sort(function(left, right) {
+        var a = left.criteria;
+        var b = right.criteria;
+        if (a !== b) {
+            if (a > b || a === void 0) return 1;
+            if (a < b || b === void 0) return -1;
+        }
+        return left.index < right.index ? -1 : 1;
+    })
+
+    return _.map(sorted, function(el) {
+        return el.value
+    });
+}
+
+function shuffle(el, options) {
     options = options || {};
 
     var compare = options.compare || _.identity;
     var sort = options.sort;
     var union = options.union || false;
-    var replaceWith = options.replaceWith || function(older, newer){ return newer; };
+    var replaceWith = options.replaceWith || function(older, newer) {
+            return newer;
+        };
     var duration = options.duration || function() {
             return (Math.random() * 800) + 200;
         };
@@ -60,7 +95,7 @@ module.exports = function(el, options) {
     var selector = options.selector;
 
     var selectNodes = function() {
-        return _(selector ? el.querySelectorAll(selector) : el.childNodes).filter(function(el) {
+        return _.filter((selector ? el.querySelectorAll(selector) : el.childNodes), function(el) {
             return !el.__clone__;
         });
     };
@@ -69,20 +104,20 @@ module.exports = function(el, options) {
         add: function(nodes) {
             var children = selectNodes();
 
-            var toAdd = _(nodes).filter(function(node) {
-                return !_(children).find(function(child) {
+            var toAdd = _.filter(nodes, function(node) {
+                return !_.find(children, function(child) {
                     return compare(child) === compare(node);
                 });
             });
 
-            var toLeave = _(children).filter(function(child) {
-                return !_(nodes).find(function(node) {
+            var toLeave = _.filter(children, function(child) {
+                return !_.find(nodes, function(node) {
                     return compare(child) === compare(node);
                 });
             });
 
-            var toMove = _(children).filter(function(child) {
-                return !!_(nodes).find(function(node) {
+            var toMove = _.filter(children, function(child) {
+                return !!_.find(nodes, function(node) {
                     return compare(child) === compare(node);
                 });
             });
@@ -91,7 +126,7 @@ module.exports = function(el, options) {
             var queue = [];
 
             if (!union) {
-                _(toLeave).each(function(child) {
+                _.each(toLeave, function(child) {
                     var clone = absclone(child);
                     child.parentNode.appendChild(clone);
                     glass(child);
@@ -114,7 +149,7 @@ module.exports = function(el, options) {
                 });
             } else {
                 // just move them around
-                _(toLeave).each(function(child) {
+                _.each(toLeave, function(child) {
                     var clone = absclone(child);
                     clone.style.opacity = one;
 
@@ -142,7 +177,7 @@ module.exports = function(el, options) {
                 });
             }
 
-            _(toMove).each(function(child) {
+            _.each(toMove, function(child) {
 
                 var m = margin(child),
                     childClone = absclone(child),
@@ -196,7 +231,7 @@ module.exports = function(el, options) {
                 });
             });
 
-            _(toAdd).each(function(node) {
+            _.each(toAdd, function(node) {
                 var clone = absclone(node);
 
                 _.extend(clone.style, {
@@ -228,18 +263,18 @@ module.exports = function(el, options) {
             });
 
             // sort
-            _(selectNodes()).chain().sortBy(sort || function(el) {
-                return _(nodes).indexOf(el);
-            }).each(function(ele) {
+            _.each(sortBy(selectNodes(), sort || function(el) {
+                return _.indexOf(nodes, el);
+            }), function(ele) {
                 el.appendChild(ele);
             });
             // run the stuff in queue
             _.each(queue, function(f) {
                 f();
-            });            
+            });
         },
-        
-        fromString: function(str){
+
+        fromString: function(str) {
             var div = document.createElement('div');
             div.innerHTML = str;
             return this.add(div.childNodes);

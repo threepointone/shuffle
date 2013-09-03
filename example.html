@@ -20,7 +20,7 @@
                 union: false
             }),
             start = Date.now(),
-            _ = require('underscore');
+            _ = require('fn');
 
 
          // first, let's populate the container with some nodes. 
@@ -37,7 +37,7 @@
          // helpers
 
         function randArr() {
-            return _(30).chain().times(div).shuffle().value().slice(10);
+            return mix(_.times(30, div)).slice(10);
         }
 
         function div(val) {
@@ -60,10 +60,29 @@
         function sub(str, locals) {
             var SUBREGEX = /\{\s*([^|}]+?)\s*(?:\|([^}]*))?\s*\}/g;
             return str.replace ? str.replace(SUBREGEX, function(match, key) {
-                return _.isUndefined(locals[key]) ? match : locals[key];
+                return (typeof locals[key] === 'undefined') ? match : locals[key];
             }) : str;
         }
 
+        function random(min, max) {
+            if (max == null) {
+                max = min;
+                min = 0;
+            }
+            return min + Math.floor(Math.random() * (max - min + 1));
+        }
+
+        function mix(obj) {
+            var rand;
+            var index = 0;
+            var shuffled = [];
+            _.each(obj, function(value) {
+                rand = random(index++);
+                shuffled[index - 1] = shuffled[rand];
+                shuffled[rand] = value;
+            });
+            return shuffled;
+        }
     </script>
 
 
