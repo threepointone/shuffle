@@ -16,9 +16,7 @@ function shuffle(el, options) {
     var compare = options.compare || _.identity;
     var sort = options.sort;
     var union = options.union || false;
-    var replaceWith = options.replaceWith || function(older, newer) {
-            return newer;
-        };
+    var replace = _.isValue(options.replace) ? options.replace : true;
     var duration = options.duration || function() {
             return (Math.random() * 800) + 200;
         };
