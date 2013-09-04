@@ -109,56 +109,80 @@ function shuffle(el, options) {
 
             _.each(toMove, function(child) {
 
-                var m = margin(child),
-                    childClone = absclone(child),
-                    node = _.find(nodes, function(node) {
-                        return compare(node) === compare(child);
-                    }),
-                    nodeClone = absclone(node);
+                if (replace) {
+                    var m = margin(child),
+                        childClone = absclone(child),
+                        node = _.find(nodes, function(node) {
+                            return compare(node) === compare(child);
+                        }),
+                        nodeClone = absclone(node);
 
-                _.extend(nodeClone.style, {
-                    opacity: zero,
-                    top: (child.offsetTop - m.top) + 'px',
-                    left: (child.offsetLeft - m.left) + 'px'
-                });
+                    _.extend(nodeClone.style, {
+                        opacity: zero,
+                        top: (child.offsetTop - m.top) + 'px',
+                        left: (child.offsetLeft - m.left) + 'px'
+                    });
 
-                glass(node);
-                glass(child);
+                    glass(node);
+                    glass(child);
 
-                child.parentNode.appendChild(node);
+                    child.parentNode.appendChild(node);
 
-                child.parentNode.appendChild(nodeClone);
-                child.parentNode.appendChild(childClone);
-                var target = replace(child, replaceWith(child, node));
+                    child.parentNode.appendChild(nodeClone);
+                    child.parentNode.appendChild(childClone);
+                    var target = _replace(child, node);
 
-                queue.push(function() {
-                    setTimeout(function() {
-                        var m = margin(node);
+                    queue.push(function() {
+                        setTimeout(function() {
+                            var m = margin(node);
 
-                        var opts = {
-                            top: target.offsetTop - m.top,
-                            left: target.offsetLeft - m.left,
-                            easing: easing,
-                            duration: duration()
-                        };
+                            var opts = {
+                                top: target.offsetTop - m.top,
+                                left: target.offsetLeft - m.left,
+                                easing: easing,
+                                duration: duration()
+                            };
 
-                        morpheus(childClone, _.extend({}, opts, {
-                            opacity: zero,
-                            complete: function() {
-                                childClone.parentNode.removeChild(childClone);
-                                wood(child);
-                            }
-                        }));
+                            morpheus(childClone, _.extend({}, opts, {
+                                opacity: zero,
+                                complete: function() {
+                                    childClone.parentNode.removeChild(childClone);
+                                    wood(child);
+                                }
+                            }));
 
-                        morpheus(nodeClone, _.extend({}, opts, {
-                            opacity: one,
-                            complete: function() {
-                                nodeClone.parentNode.removeChild(nodeClone);
-                                wood(target);
-                            }
-                        }));
-                    }, Math.random() * 200);
-                });
+                            morpheus(nodeClone, _.extend({}, opts, {
+                                opacity: one,
+                                complete: function() {
+                                    nodeClone.parentNode.removeChild(nodeClone);
+                                    wood(target);
+                                }
+                            }));
+                        }, Math.random() * 200);
+                    })
+                } else {
+                    var clone = absclone(child);
+                    glass(child);
+                    el.appendChild(clone);
+                    queue.push(function() {
+                        setTimeout(function() {
+                            var m = margin(child);
+                            clone.animation = morpheus(clone, {
+                                top: child.offsetTop - m.top,
+                                left: child.offsetLeft - m.left,
+                                easing: easing,
+                                duration: 100 + (Math.random() * 900),
+                                complete: function() {
+                                    clone.parentNode.removeChild(clone);
+                                    wood(child);
+                                }
+                            });
+                        }, Math.random() * 200);
+
+                    });
+                }
+
+
             });
 
             _.each(toAdd, function(node) {
@@ -214,7 +238,7 @@ function shuffle(el, options) {
 
 // herlpers
 
-function replace(older, newer) {
+function _replace(older, newer) {
     if (older === newer) {
         return older;
     }
@@ -258,8 +282,8 @@ function absclone(el) {
 
 function sortBy(obj, value, context) {
     var iterator = (typeof value === 'function') ? value : function(obj) {
-        return obj[value];
-    };
+            return obj[value];
+        };
     var sorted = _.map(obj, function(value, index, list) {
         return {
             value: value,
@@ -280,7 +304,6 @@ function sortBy(obj, value, context) {
         return el.value
     });
 }
-
 },{"fn":"vLmZuc","morpheus":4}],"./index.js":[function(require,module,exports){
 module.exports=require('1SmzYX');
 },{}],"vLmZuc":[function(require,module,exports){
