@@ -129,7 +129,7 @@ function shuffle(el, options) {
 
                     child.parentNode.appendChild(nodeClone);
                     child.parentNode.appendChild(childClone);
-                    var target = _replace(child, node);
+                    var target = swap(child, node);
 
                     queue.push(function() {
                         setTimeout(function() {
@@ -237,7 +237,7 @@ function shuffle(el, options) {
 
 // herlpers
 
-function _replace(older, newer) {
+function swap(older, newer) {
     if (older === newer) {
         return older;
     }
