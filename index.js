@@ -197,18 +197,19 @@ function shuffle(el, options) {
                 el.appendChild(clone);
                 el.appendChild(node);
 
-                var _in = options._in ? options._in(node) : {
-                    top: (-500 + Math.random() * 1500),
-                    left: (-500 + Math.random() * 1500)
-                };
-
-                _.extend(clone.style, {
-                    top: _in.top + 'px',
-                    left: _in.left + 'px'
-                });                
+                
 
                 queue.push(function() {
                     setTimeout(function() {
+                        var _in = options._in ? options._in(node) : {
+                            top: (-500 + Math.random() * 1500),
+                            left: (-500 + Math.random() * 1500)
+                        };
+
+                        _.extend(clone.style, {
+                            top: _in.top + 'px',
+                            left: _in.left + 'px'
+                        });                
                         var m = margin(node);
                         morpheus(clone, {
                             opacity: one,
