@@ -170,7 +170,7 @@ function shuffle(el, options) {
                                 top: child.offsetTop - m.top,
                                 left: child.offsetLeft - m.left,
                                 easing: easing,
-                                duration: 100 + (Math.random() * 900),
+                                duration: duration(),
                                 complete: function() {
                                     clone.parentNode.removeChild(clone);
                                     wood(child);
@@ -272,7 +272,7 @@ function absclone(el) {
         top: (el.offsetTop - m.top) + 'px',
         left: (el.offsetLeft - m.left) + 'px'
     });
-
+    
     clone.className += ' clone';
     clone.__clone__ = true; // a little hint for anyone else to ignore this. 
 

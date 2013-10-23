@@ -171,7 +171,7 @@ function shuffle(el, options) {
                                 top: child.offsetTop - m.top,
                                 left: child.offsetLeft - m.left,
                                 easing: easing,
-                                duration: 100 + (Math.random() * 900),
+                                duration: duration(),
                                 complete: function() {
                                     clone.parentNode.removeChild(clone);
                                     wood(child);
@@ -273,7 +273,7 @@ function absclone(el) {
         top: (el.offsetTop - m.top) + 'px',
         left: (el.offsetLeft - m.left) + 'px'
     });
-
+    
     clone.className += ' clone';
     clone.__clone__ = true; // a little hint for anyone else to ignore this. 
 
@@ -304,7 +304,7 @@ function sortBy(obj, value, context) {
         return el.value
     });
 }
-},{"fn":"vLmZuc","morpheus":4}],"./index.js":[function(require,module,exports){
+},{"fn":"vLmZuc","morpheus":5}],"./index.js":[function(require,module,exports){
 module.exports=require('1SmzYX');
 },{}],"vLmZuc":[function(require,module,exports){
 // fair caveat, this is code collected from various places, and I don't have tests yet. YET.
@@ -528,7 +528,9 @@ each(module.exports, function(fn, name) {
 chain.prototype.val = function() {
     return this._obj;
 };
-},{}],4:[function(require,module,exports){
+},{}],"fn":[function(require,module,exports){
+module.exports=require('vLmZuc');
+},{}],5:[function(require,module,exports){
 /*!
   * Morpheus - A Brilliant Animator
   * https://github.com/ded/morpheus - (c) Dustin Diaz 2011
@@ -932,7 +934,5 @@ chain.prototype.val = function() {
 
 });
 
-},{}],"fn":[function(require,module,exports){
-module.exports=require('vLmZuc');
 },{}]},{},[])
 ;
