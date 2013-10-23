@@ -65,9 +65,13 @@ function shuffle(el, options) {
                     });
 
                     setTimeout(function() {
-                        morpheus(clone, {
+                        var out = options.out ? options.out(child) : {
                             top: -500 + Math.random() * 1500,
-                            left: -500 + Math.random() * 1500,
+                            left: -500 + Math.random() * 1500
+                        };
+                        morpheus(clone, {
+                            top: out.top,
+                            left: out.left,
                             opacity: zero,
                             easing: easing,
                             duration: duration(),
@@ -187,10 +191,13 @@ function shuffle(el, options) {
 
             _.each(toAdd, function(node) {
                 var clone = absclone(node);
-
+                var _in = options._in ? options._in(node) : {
+                    top: (-500 + Math.random() * 1500),
+                    left: (-500 + Math.random() * 1500)
+                };
                 _.extend(clone.style, {
-                    top: (-500 + Math.random() * 1500) + 'px',
-                    left: (-500 + Math.random() * 1500) + 'px'
+                    top: _in.top + 'px',
+                    left: _in.left + 'px'
                 });
 
                 glass(clone);
@@ -273,7 +280,7 @@ function absclone(el) {
         top: (el.offsetTop - m.top) + 'px',
         left: (el.offsetLeft - m.left) + 'px'
     });
-    
+
     clone.className += ' clone';
     clone.__clone__ = true; // a little hint for anyone else to ignore this. 
 
