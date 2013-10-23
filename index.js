@@ -58,16 +58,17 @@ function shuffle(el, options) {
                 _.each(toLeave, function(child) {
                     var clone = absclone(child);
                     child.parentNode.appendChild(clone);
+                    var out = options.out ? options.out(child) : {
+                        top: -500 + Math.random() * 1500,
+                        left: -500 + Math.random() * 1500
+                    };
                     glass(child);
                     queue.push(function() {
                         child.parentNode.removeChild(child);
                     });
 
                     setTimeout(function() {
-                        var out = options.out ? options.out(child) : {
-                            top: -500 + Math.random() * 1500,
-                            left: -500 + Math.random() * 1500
-                        };
+                        
                         morpheus(clone, {
                             top: out.top,
                             left: out.left,
@@ -190,19 +191,21 @@ function shuffle(el, options) {
 
             _.each(toAdd, function(node) {
                 var clone = absclone(node);
-                var _in = options._in ? options._in(node) : {
-                    top: (-500 + Math.random() * 1500),
-                    left: (-500 + Math.random() * 1500)
-                };
-                _.extend(clone.style, {
-                    top: _in.top + 'px',
-                    left: _in.left + 'px'
-                });
-
+                
                 glass(clone);
                 glass(node);
                 el.appendChild(clone);
                 el.appendChild(node);
+
+                var _in = options._in ? options._in(node) : {
+                    top: (-500 + Math.random() * 1500),
+                    left: (-500 + Math.random() * 1500)
+                };
+
+                _.extend(clone.style, {
+                    top: _in.top + 'px',
+                    left: _in.left + 'px'
+                });                
 
                 queue.push(function() {
                     setTimeout(function() {
