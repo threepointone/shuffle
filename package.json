@@ -6,7 +6,7 @@
   "author": "threepointone@gmail.com",
   "license": "BSD",
   "dependencies": {
-    "morpheus": "~0.6.8",
-    "fn": "git://github.com/threepointone/fn.git"
+    "fn": "git://github.com/threepointone/fn.git",
+    "morpheus": "~0.7.0"
   }
 }

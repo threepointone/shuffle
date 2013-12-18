@@ -427,11 +427,14 @@ function each(obj, fn) {
 
 function extend(obj) {
     var args = slice.call(arguments, 1);
-    each(args, function(arg) {
-        each(arg, function(val, prop) {
-            obj[prop] = val;
-        });
-    });
+    for (var i = 0, j = args.length; i < j; i++) {
+        var source = args[i];
+        for (var prop in source) {
+            if (has.call(source, prop)) {
+                obj[prop] = source[prop];
+            }
+        }
+    }
     return obj;
 }
 
@@ -559,6 +562,7 @@ module.exports=require('vLmZuc');
     , perf = win.performance
     , perfNow = perf && (perf.now || perf.webkitNow || perf.msNow || perf.mozNow)
     , now = perfNow ? function () { return perfNow.call(perf) } : function () { return +new Date() }
+    , fixTs = false // feature detected below
     , html = doc.documentElement
     , thousand = 1000
     , rgbOhex = /^rgb\(|#/
@@ -634,6 +638,12 @@ module.exports=require('vLmZuc');
       }
   }()
 
+  frame(function(timestamp) {
+    // feature-detect if rAF and now() are of the same scale (epoch or high-res),
+    // if not, we have to do a timestamp fix on each frame
+    fixTs = timestamp > 1e12 != now() > 1e12
+  })
+
   var children = []
 
   function has(array, elem, i) {
@@ -645,9 +655,7 @@ module.exports=require('vLmZuc');
 
   function render(timestamp) {
     var i, count = children.length
-    // if we're using a high res timer, make sure timestamp is not the old epoch-based value.
-    // http://updates.html5rocks.com/2012/05/requestAnimationFrame-API-now-with-sub-millisecond-precision
-    if (perfNow && timestamp > 1e12) timestamp = now()
+    if (fixTs) timestamp = now()
     for (i = count; i--;) {
       children[i](timestamp)
     }
